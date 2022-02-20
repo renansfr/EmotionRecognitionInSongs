@@ -51,19 +51,16 @@ def request_song_url(artist_name, song_cap):
 def scrape_song_lyrics(url, directory):
     page = requests.get(url)
     html = BeautifulSoup(page.text, 'html.parser')
-    lyrics = html.find('div', id='lyrics-root')
-    if(lyrics):
+    extractedLyrics = html.find('div', id='lyrics-root')
+    if(extractedLyrics):
         title = html.find('h2').get_text()
-        verses = lyrics.find_all('span')
-        del verses[-1]
+        lyricsArray = extractedLyrics.contents
+        del lyricsArray[-1]
         formattedLyrics = ''
-        for x in verses:
-            if(len(x.contents) > 0 and x.get_text()):
-                for y in x.contents:
-                    if(isinstance(y, Tag)):
-                        formattedLyrics = formattedLyrics + '\n'
-                    else:
-                        formattedLyrics = formattedLyrics + y
+        for x in lyricsArray:
+            if(len(x.contents) > 0):
+                for y in x.strings:
+                    formattedLyrics = formattedLyrics + '\n' + y
         f = open(directory + '/' + title.lower() + '.txt', 'w')
         f.write(formattedLyrics)
         f.close()
