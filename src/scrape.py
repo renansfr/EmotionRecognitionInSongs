@@ -3,7 +3,7 @@ GENIUS_API_TOKEN='hgHXjEpkYI85Ud6Bw2LWCwrLlYcznI3pjq0NANvSq7fDkG6Pvb9qi06S7HnJVD
 # Make HTTP requests
 import requests
 # Scrape data from an HTML document
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 # I/O
 import os
 # Search and manipulate strings
@@ -56,9 +56,14 @@ def scrape_song_lyrics(url, directory):
         title = html.find('h2').get_text()
         verses = lyrics.find_all('span')
         del verses[-1]
-        formattedLyrics = title
+        formattedLyrics = ''
         for x in verses:
-            formattedLyrics = formattedLyrics + '\n' + x.get_text()
+            if(len(x.contents) > 0 and x.get_text()):
+                for y in x.contents:
+                    if(isinstance(y, Tag)):
+                        formattedLyrics = formattedLyrics + '\n'
+                    else:
+                        formattedLyrics = formattedLyrics + y
         f = open(directory + '/' + title.lower() + '.txt', 'w')
         f.write(formattedLyrics)
         f.close()
@@ -68,7 +73,7 @@ def scrape_song_lyrics(url, directory):
 
 def write_lyrics_to_file(artist_name, song_count):
     urls = request_song_url(artist_name, song_count)
-    directory = artist_name
+    directory = artist_name.lower()
     parent_dir = './'
     path = os.path.join(parent_dir, directory)
     if os.path.exists(path):
