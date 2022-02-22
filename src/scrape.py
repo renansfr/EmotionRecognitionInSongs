@@ -61,7 +61,7 @@ def scrape_song_lyrics(url, directory):
             if(len(x.contents) > 0):
                 for y in x.strings:
                     formattedLyrics = formattedLyrics + '\n' + y
-        f = open(directory + '/' + title.lower() + '.txt', 'w')
+        f = open(directory + '/' + title.lower() + '.txt', 'w', encoding="utf-8")
         f.write(formattedLyrics)
         f.close()
         return
