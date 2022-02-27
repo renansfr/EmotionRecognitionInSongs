@@ -9,6 +9,10 @@ import os
 # Search and manipulate strings
 import re
 import shutil
+from nrclex import NRCLex
+import text2emotion as te
+import nltk
+nltk.download('omw-1.4')
 
 # Get artist object from Genius API
 def request_artist_info(artist_name, page):
@@ -48,36 +52,44 @@ def request_song_url(artist_name, song_cap):
     return songs
 
 # Scrape lyrics from a Genius.com song URL
-def scrape_song_lyrics(url, directory):
+def scrape_song_lyrics(url, artist_name):
     page = requests.get(url)
     html = BeautifulSoup(page.text, 'html.parser')
     extractedLyrics = html.find('div', id='lyrics-root')
     if(extractedLyrics):
-        title = html.find('h2').get_text()
+        artist_name = html.find('h2').get_text()
         lyricsArray = extractedLyrics.contents
         del lyricsArray[-1]
         formattedLyrics = ''
+        formattedEmotions = ''
         for x in lyricsArray:
             if(len(x.contents) > 0):
                 for y in x.strings:
-                    formattedLyrics = formattedLyrics + '\n' + y
-        f = open(directory + '/' + title.lower() + '.txt', 'w', encoding="utf-8")
-        f.write(formattedLyrics)
-        f.close()
-        return
+                    if(y[0] != '['):
+                        txt2EmotionEmotions = te.get_emotion(y)
+                        nrcLexEmotions = NRCLex(y)
+                        emotionStr = ''
+                        for x in nrcLexEmotions.top_emotions:
+                            if(x[1] != 0):
+                                emotionStr = x[0]
+                            else:
+                                for key in txt2EmotionEmotions:
+                                    if(txt2EmotionEmotions[key] != 0):
+                                        emotionStr = key
+                        if(len(emotionStr) > 0):
+                            formattedLyrics = formattedLyrics + '\n' + y + '\t' + emotionStr
+        return formattedLyrics
     else:
         return
 
 def write_lyrics_to_file(artist_name, song_count):
     urls = request_song_url(artist_name, song_count)
-    directory = artist_name.lower()
-    parent_dir = './'
-    path = os.path.join(parent_dir, directory)
-    if os.path.exists(path):
-        shutil.rmtree(path)
-    os.mkdir(path)
+    f = open(artist_name.lower() + '.txt', 'w', encoding="utf-8")
+    lyrics = ''
     for url in urls:
-        scrape_song_lyrics(url, directory)
+        lyrics = lyrics + scrape_song_lyrics(url, artist_name)
+    f.write(lyrics)
+    f.close()
 
 
 while(1):
