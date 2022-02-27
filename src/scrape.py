@@ -64,7 +64,9 @@ def scrape_song_lyrics(url, artist_name):
         formattedEmotions = ''
         for x in lyricsArray:
             if(len(x.contents) > 0):
-                for y in x.strings:
+                stringsContent = list(x.strings)
+                formattedStringsContent = list(dict.fromkeys(stringsContent))
+                for y in formattedStringsContent:
                     if(y[0] != '['):
                         txt2EmotionEmotions = te.get_emotion(y)
                         nrcLexEmotions = NRCLex(y)

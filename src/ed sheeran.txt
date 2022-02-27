@@ -12,7 +12,6 @@ Come on now, follow my lead	positive
 I may be crazy, don't mind me	sadness
 Say, boy, let's not talk too much	disgust
 Grab on my waist and put that body on me	Sad
-Come on now, follow my lead	positive
 Come, come on now, follow my lead	positive
 I'm in love with the shape of you	positive
 We push and pull like a magnet do	positive
@@ -21,9 +20,6 @@ I'm in love with your body	joy
 And last night you were in my room	Fear
 And now my bed sheets smell like you	disgust
 Every day discovering something brand new	Sad
-I'm in love with your body	joy
-I'm in love with your body	joy
-I'm in love with your body	joy
 I'm in love with your body	joy
 Every day discovering something brand new	Sad
 I'm in love with the shape of you	positive
@@ -41,7 +37,6 @@ Come on now, follow my lead	positive
 I may be crazy, don't mind me	sadness
 Say, boy, let's not talk too much	disgust
 Grab on my waist and put that body on me	Sad
-Come on now, follow my lead	positive
 Come, come on now, follow my lead	positive
 I'm in love with the shape of you	positive
 We push and pull like a magnet do	positive
@@ -50,19 +45,6 @@ I'm in love with your body	joy
 And last night you were in my room	Fear
 And now my bed sheets smell like you	disgust
 Every day discovering something brand new	Sad
-I'm in love with your body	joy
-I'm in love with your body	joy
-I'm in love with your body	joy
-I'm in love with your body	joy
-Every day discovering something brand new	Sad
-I'm in love with the shape of you	positive
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
 Come on, be my baby, come on	joy
 I'm in love with the shape of you	positive
 We push and pull like a magnet do	positive
@@ -71,18 +53,7 @@ I'm in love with your body	joy
 Last night you were in my room	Fear
 And now my bed sheets smell like you	disgust
 Every day discovering something brand new	Sad
-I'm in love with your body	joy
 Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-I'm in love with your body	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-I'm in love with your body	joy
-Come on, be my baby, come on	joy
-Come on, be my baby, come on	joy
-I'm in love with your body	joy
-Every day discovering something brand new	Sad
-I'm in love with the shape of you	positive
 Perfect Lyrics	Sad
 I found a love for me	joy
 Oh darling, just dive right in and follow my lead	positive
@@ -108,8 +79,6 @@ Baby, I'm dancing in the dark, with you between my arms	sadness
 Barefoot on the grass, listening to our favorite song	joy
 When I saw you in that dress, looking so beautiful	joy
 I don't deserve this, darling, you look perfect tonight	positive
-Baby, I'm dancing in the dark, with you between my arms	sadness
-Barefoot on the grass, listening to our favorite song	joy
 I have faith in what I see	anticipation
 Now I know I have met an angel in person	anticipation
 And she looks perfect	anticipation
