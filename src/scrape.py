@@ -61,7 +61,6 @@ def scrape_song_lyrics(url, artist_name):
         lyricsArray = extractedLyrics.contents
         del lyricsArray[-1]
         formattedLyrics = ''
-        formattedEmotions = ''
         for x in lyricsArray:
             if(len(x.contents) > 0):
                 stringsContent = list(x.strings)
