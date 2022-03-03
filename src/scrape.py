@@ -14,6 +14,14 @@ import text2emotion as te
 import nltk
 nltk.download('omw-1.4')
 
+# MongoDB Configuratin
+import pymongo
+from pymongo import MongoClient
+cluster = pymongo.MongoClient("mongodb+srv://luna-admin:1234@cluster0.sbx0f.mongodb.net/emotion_recognition?retryWrites=true&w=majority")
+db = cluster["emotion_recognition"]
+collection = db["artists"]
+
+
 # Get artist object from Genius API
 def request_artist_info(artist_name, page):
     base_url = 'https://api.genius.com'
@@ -83,6 +91,16 @@ def scrape_song_lyrics(url, artist_name):
     else:
         return
 
+def Save_artist_on_DB(name):
+    file = open(name.lower() + '.txt', 'r', encoding="utf8")
+    content = file.read();
+    doc = {
+        "name": name.lower(),
+        "content": content
+    }
+    collection.insert_one(doc)
+    file.close()
+
 def write_lyrics_to_file(artist_name, song_count):
     urls = request_song_url(artist_name, song_count)
     f = open(artist_name.lower() + '.txt', 'w', encoding="utf-8")
@@ -91,6 +109,7 @@ def write_lyrics_to_file(artist_name, song_count):
         lyrics = lyrics + scrape_song_lyrics(url, artist_name)
     f.write(lyrics)
     f.close()
+    Save_artist_on_DB(artist_name)
 
 
 while(1):
