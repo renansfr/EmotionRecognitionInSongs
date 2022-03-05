@@ -66,6 +66,9 @@ def scrape_song_lyrics(url, artist_name):
     page = requests.get(url)
     html = BeautifulSoup(page.text, 'html.parser')
     extractedLyrics = html.find('div', id='lyrics-root')
+    content = {}
+    lyrics_list = []
+    emotion_list = []
     if(extractedLyrics):
         artist_name = html.find('h2').get_text()
         lyricsArray = extractedLyrics.contents
@@ -88,38 +91,47 @@ def scrape_song_lyrics(url, artist_name):
                                     if(txt2EmotionEmotions[key] != 0):
                                         emotionStr = key
                         if(len(emotionStr) > 0):
-                            formattedLyrics = formattedLyrics + '\n' + y + '\t' + emotionStr
-        return formattedLyrics
+                            lyrics_list.append(y)
+                            emotion_list.append(emotionStr)
+        content = {"content": lyrics_list, "emotion": emotion_list}
+        return content
     else:
         return
 
 def Save_artist_on_DB(name, lyrics):
-    content = lyrics;
     doc = {
         "name": name.lower(),
-        "content": content
+        "dados": lyrics
     }
     collection.insert_one(doc)
+    db_to_Dataframe(name.lower())
     print('okay')
 
 def write_lyrics_to_file(artist_name, song_count):
     urls = request_song_url(artist_name, song_count)
-    lyrics = ''
     for url in urls:
-        lyrics = lyrics + scrape_song_lyrics(url, artist_name)
+        lyrics = scrape_song_lyrics(url, artist_name)
     Save_artist_on_DB(artist_name, lyrics)
 
 def db_to_Dataframe(artist_name):
-    for x in collection.find({},{ "name": artist_name }):
-        print(x)
-        #df = pd.DataFrame()
+    cursor = collection.find({"name": artist_name}).sort("content")
+    separate_data = {}
+    verse = []
+    emotions = []
+
+    for x in cursor:
+        separate_data = x['dados']
+        verse = separate_data['content']
+        emotions = separate_data['emotion']
+    df = pd.DataFrame(verse, emotions)
+    return df
 
 
-while(1):
-    artist = input('Digite o nome do artista: ')
-    if(collection.count_documents({"name":artist}) > 0):
-        db_to_Dataframe(artist.lower())
+
+def musicData(artist_name):
+    if(collection.count_documents({"name":artist_name}) > 0):
+        db_to_Dataframe(artist_name.lower())
     else:
-        count = 20
-        write_lyrics_to_file(artist, count)
+        count = 2
+        write_lyrics_to_file(artist_name, count)
 
