@@ -14,6 +14,8 @@ import text2emotion as te
 import nltk
 nltk.download('omw-1.4')
 
+# Data analyses
+import pandas as pd 
 # MongoDB Configuratin
 import pymongo
 from pymongo import MongoClient
@@ -91,32 +93,33 @@ def scrape_song_lyrics(url, artist_name):
     else:
         return
 
-def Save_artist_on_DB(name):
-    file = open(name.lower() + '.txt', 'r', encoding="utf8")
-    content = file.read();
+def Save_artist_on_DB(name, lyrics):
+    content = lyrics;
     doc = {
         "name": name.lower(),
         "content": content
     }
     collection.insert_one(doc)
-    file.close()
+    print('okay')
 
 def write_lyrics_to_file(artist_name, song_count):
     urls = request_song_url(artist_name, song_count)
-    f = open(artist_name.lower() + '.txt', 'w', encoding="utf-8")
     lyrics = ''
     for url in urls:
         lyrics = lyrics + scrape_song_lyrics(url, artist_name)
-    f.write(lyrics)
-    f.close()
-    Save_artist_on_DB(artist_name)
+    Save_artist_on_DB(artist_name, lyrics)
+
+def db_to_Dataframe(artist_name):
+    for x in collection.find({},{ "name": artist_name }):
+        print(x)
+        #df = pd.DataFrame()
 
 
 while(1):
     artist = input('Digite o nome do artista: ')
     if(collection.count_documents({"name":artist}) > 0):
-        print(collection.find({"name": artist.lower()}).count())
-        print("Já existe")
+        db_to_Dataframe(artist.lower())
     else:
-        count = 100
+        count = 20
         write_lyrics_to_file(artist, count)
+
