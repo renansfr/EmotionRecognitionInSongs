@@ -114,5 +114,10 @@ def write_lyrics_to_file(artist_name, song_count):
 
 while(1):
     artist = input('Digite o nome do artista: ')
-    count = int(input('Digite quantas músicas você quer do artista: '))
-    write_lyrics_to_file(artist, count)
+    if(db.collection.count_documents({"name": str(artist.lower())}) > 0):
+        print(db.collection.find({"name": artist.lower()}).count())
+        print("Já existe")
+        break
+    print(db.collection.count_documents({"name": "ed sheeran"}) > 0)
+    #count = int(input('Digite quantas músicas você quer do artista: '))
+    #write_lyrics_to_file(artist, count)
